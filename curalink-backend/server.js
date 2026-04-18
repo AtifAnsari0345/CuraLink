@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://your-vercel-app.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -56,11 +56,10 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/curalink';
 
-// Attempt to connect to configured MongoDB. If it's unavailable, start an in-memory
-// MongoDB (mongodb-memory-server) and connect Mongoose to it. Start the Express
-// server only after a successful mongoose connection to avoid buffering timeouts
-// when handlers call models before the DB is ready.
-const { MongoMemoryServer } = require('mongodb-memory-server');
+// Attempt to connect to configured MongoDB. In development, if unavailable, 
+// use mongodb-memory-server. In production, fail immediately.
+// Start the Express server only after a successful mongoose connection to avoid 
+// buffering timeouts when handlers call models before the DB is ready.
 
 async function initDbAndStart() {
   try {
@@ -70,19 +69,29 @@ async function initDbAndStart() {
     });
     console.log('✅ MongoDB connected to:', MONGO_URI.includes('localhost') ? 'local' : 'Atlas');
   } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ MongoDB unavailable in production. Exiting.');
+      throw err;
+    }
+
     console.warn('MongoDB unavailable at', MONGO_URI, 'Error:', err.message);
-    console.warn('Falling back to in-memory MongoDB (mongodb-memory-server)');
+    console.warn('Falling back to in-memory MongoDB (mongodb-memory-server) - development only');
 
-    // Start an in-memory MongoDB and connect mongoose to it
-    const mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
+    // Only use mongodb-memory-server in development
+    try {
+      const { MongoMemoryServer } = require('mongodb-memory-server');
+      const mongod = await MongoMemoryServer.create();
+      const uri = mongod.getUri();
 
-    await mongoose.connect(uri, {
-      // reduce server selection timeout for the ephemeral server
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000
-    });
-    console.log('✅ Connected to in-memory MongoDB');
+      await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000
+      });
+      console.log('✅ Connected to in-memory MongoDB');
+    } catch (fallbackErr) {
+      console.error('❌ Failed to start mongodb-memory-server:', fallbackErr.message);
+      throw fallbackErr;
+    }
   }
 
   // Start the HTTP server after DB connection is ready
