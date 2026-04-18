@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Build outputs
+curalink-frontend/dist/
+curalink-frontend/.vite/
+curalink-backend/build/
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test files
+chat-response.json
+test-chat-response.json
+test-chat.js
+
+# MongoDB local DB data
+curalink-backend/data/
+
+# Other
+*.pid
+*.seed
+*.pid.lock

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: curalink-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://curalink_user:RLb3BUB7ZH7GOzSz@mark-1.qbfcybi.mongodb.net/?appName=Mark-1
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
