@@ -1,4 +1,4 @@
-<img width="1899" height="908" alt="image" src="https://github.com/user-attachments/assets/596b4173-106a-44fe-a4f7-8014f6422a13" /># 🧬 Curalink — AI Medical Research Assistant
+# 🧬 Curalink — AI Medical Research Assistant
 
 <div align="center">
 
@@ -42,6 +42,7 @@ This is not just a chatbot — it is a **research + reasoning system** that sear
 <img width="1899" height="908" alt="image" src="https://github.com/user-attachments/assets/2b4a206c-4812-4e9c-8835-9a0ce5773b2c" />
 <img width="1919" height="910" alt="image" src="https://github.com/user-attachments/assets/d392a819-fe9c-4306-a39c-ed65d4740057" />
 <img width="1919" height="907" alt="image" src="https://github.com/user-attachments/assets/997cbf76-a618-46a8-bb84-e01aece39a69" />
+<img width="1899" height="908" alt="image" src="https://github.com/user-attachments/assets/596b4173-106a-44fe-a4f7-8014f6422a13" />
 
 ---
 
