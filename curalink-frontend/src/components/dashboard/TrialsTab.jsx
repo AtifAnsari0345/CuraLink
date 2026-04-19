@@ -25,6 +25,7 @@ export default function TrialsTab({
   savedTrialUrls,
   handleSearchTrials,
   handleSaveFavorite,
+  handleClearTrials,
   isMobile
 }) {
   const [searchError, setSearchError] = useState(null)
@@ -122,6 +123,38 @@ export default function TrialsTab({
             >
               {isSearchingTrials ? 'Searching...' : 'Search'}
             </button>
+            {(trialResults.length > 0 || hasSearchedTrials || trialSearchQuery) && (
+              <button
+                onClick={handleClearTrials}
+                style={{
+                  height: '52px',
+                  padding: '0 20px',
+                  borderRadius: '12px',
+                  border: '1.5px solid #e2e8f0',
+                  backgroundColor: '#ffffff',
+                  color: '#64748b',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                  minWidth: 'unset'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.borderColor = '#dc2626'
+                  e.target.style.color = '#dc2626'
+                  e.target.style.transform = 'translateY(-2px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.borderColor = '#e2e8f0'
+                  e.target.style.color = '#64748b'
+                  e.target.style.transform = 'none'
+                }}
+              >
+                Clear
+              </button>
+            )}
           </div>
 
           {searchError && <div style={{ color: '#dc2626', fontSize: '13px', marginTop: '8px' }}>{searchError}</div>}

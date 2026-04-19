@@ -67,6 +67,18 @@ export function useSearch(api, showToast) {
     }
   }
 
+  const handleClearTrials = () => {
+    setTrialResults([])
+    setTrialSearchQuery('')
+    setHasSearchedTrials(false)
+  }
+
+  const handleClearPublications = () => {
+    setPubResults([])
+    setPubSearchQuery('')
+    setHasSearchedPubs(false)
+  }
+
   return {
     pubSearchQuery,
     setPubSearchQuery,
@@ -97,6 +109,8 @@ export function useSearch(api, showToast) {
     sharedTrials,
     setSharedTrials,
     handleSearchPubs,
-    handleSearchTrials
+    handleSearchTrials,
+    handleClearTrials,
+    handleClearPublications
   }
 }

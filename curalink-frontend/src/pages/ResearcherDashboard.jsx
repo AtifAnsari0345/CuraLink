@@ -271,6 +271,7 @@ const ResearcherDashboard = () => {
             savedPubUrls={favoritesHook.savedPubUrls}
             handleSearchPubs={searchHook.handleSearchPubs}
             handleSaveFavorite={favoritesHook.handleSaveFavorite}
+            handleClearPublications={searchHook.handleClearPublications}
             isMobile={isMobile}
           />
         )
@@ -288,6 +289,7 @@ const ResearcherDashboard = () => {
             savedTrialUrls={favoritesHook.savedTrialUrls}
             handleSearchTrials={searchHook.handleSearchTrials}
             handleSaveFavorite={favoritesHook.handleSaveFavorite}
+            handleClearTrials={searchHook.handleClearTrials}
             isMobile={isMobile}
           />
         )
@@ -455,7 +457,7 @@ const ResearcherDashboard = () => {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              {isMobile && (
+              {activeTab !== 'ai-research' && (
                 <button
                   onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                   style={{

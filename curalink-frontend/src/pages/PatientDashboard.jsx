@@ -194,11 +194,21 @@ const PatientDashboard = () => {
     if (user) {
       loadStats()
       loadRecentFavorites()
+      
+      // Format dateOfBirth to YYYY-MM-DD for HTML date input
+      let formattedDob = ''
+      if (user.profile?.dateOfBirth) {
+        const dob = new Date(user.profile.dateOfBirth)
+        if (!isNaN(dob)) {
+          formattedDob = dob.toISOString().split('T')[0]
+        }
+      }
+      
       setProfileForm({
         firstName: user.profile?.firstName || '',
         lastName: user.profile?.lastName || '',
         location: user.profile?.location || '',
-        dateOfBirth: user.profile?.dateOfBirth || '',
+        dateOfBirth: formattedDob,
         bio: user.profile?.bio || '',
         conditions: user.profile?.conditions || [],
         medications: user.profile?.medications || []
@@ -415,6 +425,18 @@ const PatientDashboard = () => {
     }
   }
 
+  const handleClearTrials = () => {
+    setTrialResults([])
+    setTrialSearchQuery('')
+    setHasSearchedTrials(false)
+  }
+
+  const handleClearPublications = () => {
+    setPubResults([])
+    setPubSearchQuery('')
+    setHasSearchedPubs(false)
+  }
+
   const getInitials = (name) => {
     if (!name) return '?'
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
@@ -536,7 +558,7 @@ const PatientDashboard = () => {
           flexShrink: 0
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {isMobile && (
+            {activeTab !== 'ai-research' && (
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 style={{
@@ -655,6 +677,7 @@ const PatientDashboard = () => {
               savedTrialUrls={savedTrialUrls}
               handleSearchTrials={handleSearchTrials}
               handleSaveFavorite={handleSaveFavorite}
+              handleClearTrials={handleClearTrials}
               isMobile={isMobile}
             />
           )}
@@ -676,6 +699,7 @@ const PatientDashboard = () => {
               savedPubUrls={savedPubUrls}
               handleSearchPubs={handleSearchPubs}
               handleSaveFavorite={handleSaveFavorite}
+              handleClearPublications={handleClearPublications}
               isMobile={isMobile}
             />
           )}
