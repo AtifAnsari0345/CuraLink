@@ -39,8 +39,7 @@ This is not just a chatbot — it is a **research + reasoning system** that sear
 
 ### Landing Page:
 
-<img width="1831" height="907" alt="image" src="https://github.com/user-attachments/assets/5f5239bb-ee3e-413b-b72d-a5d271fb5c6e" />
-
+<img width="1831" height="907" alt="image" src="https://github.com/user-attachments/assets/5f5239bb-ee3e-413b-b72d-a5d271fb5c6e" /> &emsp;
 
 <img width="1854" height="893" alt="image" src="https://github.com/user-attachments/assets/02665b3b-5acb-498b-963a-492c81863455" />
 
