@@ -12,6 +12,7 @@ node_modules/
 .env.development
 
 # Render deployment config (may contain sensitive env vars)
+curalink-backend/render.yaml
 render.yaml
 
 # Build outputs
