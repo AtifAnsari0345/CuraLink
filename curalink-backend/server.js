@@ -69,29 +69,8 @@ async function initDbAndStart() {
     });
     console.log('✅ MongoDB connected to:', MONGO_URI.includes('localhost') ? 'local' : 'Atlas');
   } catch (err) {
-    if (process.env.NODE_ENV === 'production') {
-      console.error('❌ MongoDB unavailable in production. Exiting.');
-      throw err;
-    }
-
-    console.warn('MongoDB unavailable at', MONGO_URI, 'Error:', err.message);
-    console.warn('Falling back to in-memory MongoDB (mongodb-memory-server) - development only');
-
-    // Only use mongodb-memory-server in development
-    try {
-      const { MongoMemoryServer } = require('mongodb-memory-server');
-      const mongod = await MongoMemoryServer.create();
-      const uri = mongod.getUri();
-
-      await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 45000
-      });
-      console.log('✅ Connected to in-memory MongoDB');
-    } catch (fallbackErr) {
-      console.error('❌ Failed to start mongodb-memory-server:', fallbackErr.message);
-      throw fallbackErr;
-    }
+    console.error('❌ MongoDB connection failed:', err.message);
+    process.exit(1);
   }
 
   // Start the HTTP server after DB connection is ready
