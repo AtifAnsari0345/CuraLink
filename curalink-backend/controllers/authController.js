@@ -120,6 +120,9 @@ const getMe = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
+    console.log('📝 Update profile request received');
+    console.log('Request body:', req.body);
+    
     const user = await User.findById(req.user._id);
     const profileData = req.body.profile || req.body;
 
@@ -128,12 +131,22 @@ const updateProfile = async (req, res) => {
     }
 
     if (profileData && typeof profileData === 'object') {
+      console.log('📋 Updating profile with:', profileData);
       Object.assign(user.profile, profileData);
+      
+      // Explicitly set dateOfBirth if present
+      if (profileData.dateOfBirth) {
+        user.profile.dateOfBirth = new Date(profileData.dateOfBirth);
+        console.log('✅ dateOfBirth set to:', user.profile.dateOfBirth);
+      }
     }
 
+    console.log('💾 Saving user profile...');
     await user.save();
+    console.log('✅ Profile saved successfully!');
 
     const updatedUser = await User.findById(req.user._id).select('-password');
+    console.log('📤 Returning updated user:', updatedUser);
     res.status(200).json(updatedUser);
   } catch (error) {
     console.error('❌ Update profile error:', {

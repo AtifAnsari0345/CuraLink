@@ -1,11 +1,18 @@
+# CuraLink Full-Stack App .gitignore
+# ====================================
+
 # Dependencies
 node_modules/
 
-# Environment files
+# Environment files (ALL env vars are sensitive!)
 .env
 .env.local
 .env.*.local
 .env.production
+.env.development
+
+# Render deployment config (may contain sensitive env vars)
+render.yaml
 
 # Build outputs
 curalink-frontend/dist/
