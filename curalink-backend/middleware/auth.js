@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️ WARNING: JWT_SECRET not set in auth middleware! Using default secret!');
+  process.env.JWT_SECRET = 'curalink_default_jwt_secret_for_development_only';
+}
+
 const protect = async (req, res, next) => {
   try {
     let token;
@@ -24,8 +29,11 @@ const protect = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error('Auth middleware error:', error);
-    res.status(401).json({ error: 'Invalid or expired token' });
+    console.error('❌ Auth middleware error:', {
+      message: error.message,
+      stack: error.stack
+    });
+    res.status(401).json({ error: 'Invalid or expired token', details: error.message });
   }
 };
 

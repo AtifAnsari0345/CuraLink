@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️ WARNING: JWT_SECRET not set! Using default secret (not for production!)');
+  process.env.JWT_SECRET = 'curalink_default_jwt_secret_for_development_only';
+}
+
 const register = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
@@ -45,8 +50,12 @@ const register = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({ error: 'Server error during registration' });
+    console.error('❌ Register error:', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code
+    });
+    res.status(500).json({ error: 'Server error during registration', details: error.message });
   }
 };
 
@@ -88,8 +97,12 @@ const login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Server error during login' });
+    console.error('❌ Login error:', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code
+    });
+    res.status(500).json({ error: 'Server error during login', details: error.message });
   }
 };
 
@@ -97,8 +110,11 @@ const getMe = async (req, res) => {
   try {
     res.status(200).json(req.user);
   } catch (error) {
-    console.error('Get me error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('❌ Get me error:', {
+      message: error.message,
+      stack: error.stack
+    });
+    res.status(500).json({ error: 'Server error', details: error.message });
   }
 };
 
@@ -120,8 +136,11 @@ const updateProfile = async (req, res) => {
     const updatedUser = await User.findById(req.user._id).select('-password');
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.error('Update profile error:', error);
-    res.status(500).json({ error: 'Server error updating profile' });
+    console.error('❌ Update profile error:', {
+      message: error.message,
+      stack: error.stack
+    });
+    res.status(500).json({ error: 'Server error updating profile', details: error.message });
   }
 };
 
