@@ -2,126 +2,97 @@
 
 <div align="center">
 
-![Curalink Logo](./curalink-frontend/src/assets/Curalink%20logo.jpg)
+![Curalink Logo](curalink-frontend/src/assets/Curalink%20logo.jpg)
 
-**Your AI-powered health research companion**
+**Your intelligent companion for medical research, clinical trials, and personalized health insights.**
 
-*Understands user context → Retrieves high-quality medical research → Reasons over it → Delivers structured, personalized, source-backed answers*
-
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-7c3aed?style=for-the-badge)](https://your-deployment-url.com)
-[![Backend](https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-green?style=for-the-badge)](https://your-backend-url.com)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://cura-link-mark1.vercel.app/)
+[![Backend](https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render)](https://curalink-9la1.onrender.com)
+[![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb)](https://mongodb.com)
+[![React](https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 📌 Overview
 
-- [Overview](#-overview)
-- [Live Demo](#-live-demo)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [AI Pipeline Architecture](#-ai-pipeline-architecture)
-- [Data Sources](#-data-sources)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [API Endpoints](#-api-endpoints)
-- [Screenshots](#-screenshots)
-- [Author](#-author)
+Curalink is a full-stack AI-powered medical research assistant built on the **MERN stack**. It acts as a health research companion that:
+
+> **Understands user context → retrieves high-quality medical research → reasons over it → delivers structured, personalized, and source-backed answers.**
+
+This is not just a chatbot — it is a **research + reasoning system** that searches across three live medical databases simultaneously, ranks results intelligently, and generates structured responses using an open-source LLM pipeline.
 
 ---
 
-## 🎯 Overview
-
-**Curalink** is a full-stack AI-powered Medical Research Assistant built on the **MERN stack**. It acts as a health research companion that intelligently retrieves, ranks, and reasons over real medical literature from multiple live data sources to deliver structured, personalized, research-backed answers.
-
-This is **not just a chatbot** — it is a complete **research + reasoning system** with:
-
-- Role-based user accounts (Patient & Researcher)
-- Real-time retrieval from PubMed, OpenAlex, and ClinicalTrials.gov
-- Intelligent query expansion and result ranking
-- Multi-turn conversation memory
-- Community forum, favorites, meetings, and researcher networking
-
-> Built for the **Curalink AI Medical Research Assistant Hackathon**
-
----
-
-## 🚀 Live Demo
+## 🌐 Live Application
 
 | Service | URL |
-|--------|-----|
-| 🌐 Frontend | `https://your-deployment-url.vercel.app` |
-| ⚙️ Backend API | `https://your-backend-url.onrender.com` |
-| ❤️ Health Check | `https://your-backend-url.onrender.com/api/health` |
+|---|---|
+| 🌍 Frontend (Vercel) | [https://cura-link-mark1.vercel.app/](https://cura-link-mark1.vercel.app/) |
+| ⚙️ Backend (Render) | [https://curalink-9la1.onrender.com](https://curalink-9la1.onrender.com) |
+| 🔍 Health Check | [https://curalink-9la1.onrender.com/api/health](https://curalink-9la1.onrender.com/api/health) |
+
+---
+
+## 📸 Screenshots
+
+> _Add your screenshots here_
+
+| Feature | Screenshot |
+|---|---|
+| Landing Page | _(add screenshot)_ |
+| Patient Dashboard | _(add screenshot)_ |
+| Researcher Dashboard | _(add screenshot)_ |
+| AI Research Assistant | _(add screenshot)_ |
+| Clinical Trials | _(add screenshot)_ |
+| Publications | _(add screenshot)_ |
+| My Network | _(add screenshot)_ |
+| Community Forum | _(add screenshot)_ |
+| Profile Page | _(add screenshot)_ |
+| Meetings | _(add screenshot)_ |
 
 ---
 
 ## ✨ Features
 
-### 🤖 Core AI Research Pipeline
-- **Intelligent Query Expansion** — Automatically expands user queries by combining disease context + intent keywords + expanded medical terminology
-- **Parallel Multi-Source Retrieval** — Fetches 80+ PubMed articles, 80+ OpenAlex papers, and 40+ ClinicalTrials simultaneously using `Promise.all`
-- **Smart Ranking Algorithm** — Scores results by relevance (title/abstract keyword match), recency (year weight), and source credibility (PubMed premium bonus)
-- **3-Tier LLM Reasoning** — HuggingFace Mistral-7B → Ollama (local) → Structured Research Engine fallback (always works)
-- **Multi-turn Context Memory** — Conversations stored in MongoDB with session continuity across follow-up questions
-- **Structured Output** — Every response includes Condition Overview, Research Insights, Clinical Trials, Key Takeaways, Summary, and Sources
+### 🤖 AI Research Pipeline (Core Feature)
+- **Intelligent Query Expansion** — automatically combines disease context + user query into optimized search terms
+- **Parallel Multi-Source Retrieval** — simultaneously fetches from PubMed (80+ results), OpenAlex (80+ results), and ClinicalTrials.gov (40+ results)
+- **Smart Re-Ranking** — scores results by relevance, recency, and source credibility before showing top 8
+- **Three-Tier LLM** — HuggingFace Mistral-7B → Ollama (local) → Structured Research Engine (always-on fallback)
+- **Multi-turn Context Memory** — conversations persist across sessions via MongoDB with in-memory fallback
+- **Structured Responses** — every answer includes Condition Overview, Research Insights, Clinical Trials, Key Takeaways, Summary, and Sources
 
-### 👤 Patient Dashboard
-- Profile setup with medical conditions, medications, location, date of birth
-- AI Research Assistant with auto-filled conditions from profile
-- Publications search with PubMed/OpenAlex source filtering and year range
-- Clinical Trials search with recruiting status and phase filtering
-- Favorites management (save and remove publications + trials)
-- Community Forum with role-tagged posts
-- Research Topics Distribution pie chart
-- Recent Activity Timeline line chart
+### 👤 Dual Role System
+- **Patient / Caregiver** — personalized research based on medical conditions
+- **Researcher** — professional tools for literature search, collaboration, and trial management
+- Role-based access control — users can only access their own dashboard
+
+### 🏥 Patient Dashboard
+- AI Research Assistant with auto-filled condition from profile
+- Publications search with PubMed/OpenAlex source filters
+- Clinical Trials search with status and phase filters
+- Save favorites (publications + trials)
+- Community Forum with role badges
+- Profile management with medical conditions and medications as tag selection
+- Overview charts: Research Topics Distribution (pie) + Recent Activity Timeline (line)
 
 ### 🔬 Researcher Dashboard
-- Professional profile with institution, ORCID ID, specialties, and research interests
-- AI Research Tool with persistent chat history across tab navigation
-- Publications and Clinical Trials search with advanced filters
-- My Network — Discover researchers, send/accept/decline connection requests, direct messaging with connections
-- Meetings — Schedule, edit, complete, and delete meetings with full CRUD
-- Publications by Category and Saved vs Viewed vs Skipped analytics charts
-- Community Forum with Researcher role badge
+- AI Research Tool with research interest context
+- My Network — discover researchers, send/accept/decline connection requests, direct messaging
+- Meetings — schedule, manage, and mark meetings complete
+- Publications and Clinical Trials search with save to favorites
+- Community Forum (shared with patients, researcher badge shown)
+- Profile with specialties and research interests as clickable tag selection
+- Overview charts: Publications by Category (pie) + Saved vs Viewed vs Skipped (bar)
 
 ### 🔐 Authentication & Security
-- JWT-based authentication with 7-day token expiry
-- Role-based route protection (Patient ↔ Researcher isolation)
-- Mandatory profile completion gate before dashboard access
-- In-memory session fallback when MongoDB is unavailable
-
----
-
-## 🛠 Tech Stack
-
-### Frontend
-| Technology | Purpose |
-|-----------|---------|
-| React 18 + Vite | Frontend framework and build tool |
-| React Router DOM | Client-side routing with protected routes |
-| Axios | HTTP client for API calls |
-| Recharts | Interactive charts and data visualization |
-| ReactMarkdown | Renders AI responses with rich formatting |
-
-### Backend
-| Technology | Purpose |
-|-----------|---------|
-| Node.js + Express | REST API server |
-| MongoDB + Mongoose | Database and ODM |
-| JWT + bcryptjs | Authentication and password hashing |
-| Axios | External API calls (PubMed, OpenAlex, ClinicalTrials) |
-| xml2js | XML parsing for PubMed responses |
-
-### AI / LLM
-| Technology | Purpose |
-|-----------|---------|
-| HuggingFace Inference API | Primary LLM (Mistral-7B-Instruct) |
-| Ollama | Secondary local LLM (Llama 3.2 / Mistral) |
-| Structured Research Engine | Always-available fallback with real retrieved data |
+- JWT-based authentication with 7-day tokens
+- Bcrypt password hashing (12 salt rounds)
+- Protected routes with role-based guards
+- Profile completion gate — users must set up their profile before accessing dashboard
+- Session persistence via localStorage
 
 ---
 
@@ -132,69 +103,76 @@ User Query
     │
     ▼
 ┌─────────────────────────────────┐
-│      Query Expansion Engine      │
-│  disease + intent + terminology  │
+│        Query Expansion          │
+│  disease + intent → expanded    │
+│  terms + related keywords       │
 └─────────────────────────────────┘
     │
     ▼ (parallel)
-┌──────────┐  ┌──────────┐  ┌─────────────────┐
-│  PubMed  │  │ OpenAlex │  │ ClinicalTrials  │
-│  80 IDs  │  │ 80 works │  │   40 studies    │
-│  + fetch │  │ paginated│  │   v2 API        │
-└──────────┘  └──────────┘  └─────────────────┘
+┌──────────┐  ┌──────────┐  ┌──────────────────┐
+│  PubMed  │  │ OpenAlex │  │ ClinicalTrials   │
+│  (80+)   │  │  (80+)   │  │     .gov (40+)   │
+└──────────┘  └──────────┘  └──────────────────┘
     │               │                │
     └───────────────┴────────────────┘
                     │
                     ▼
-        ┌───────────────────────┐
-        │   Ranking Service      │
-        │ • Relevance score      │
-        │ • Recency score        │
-        │ • Source credibility   │
-        │ → Top 8 pubs + 6 trials│
-        └───────────────────────┘
+        ┌─────────────────────┐
+        │   Ranking Engine    │
+        │  relevance + recency│
+        │  + credibility score│
+        └─────────────────────┘
+                    │
+                    ▼ (top 8 pubs + top 6 trials)
+        ┌─────────────────────┐
+        │   LLM Reasoning     │
+        │  1. HuggingFace     │
+        │  2. Ollama (local)  │
+        │  3. Structured      │
+        │     Fallback Engine │
+        └─────────────────────┘
                     │
                     ▼
-        ┌───────────────────────┐
-        │     LLM Reasoning      │
-        │ 1. HuggingFace Mistral │
-        │ 2. Ollama local LLM    │
-        │ 3. Structured fallback │
-        └───────────────────────┘
-                    │
-                    ▼
-        ┌───────────────────────┐
-        │   Structured Response  │
-        │ • Condition Overview   │
-        │ • Research Insights    │
-        │ • Clinical Trials      │
-        │ • Key Takeaways        │
-        │ • Summary              │
-        │ • Sources              │
-        └───────────────────────┘
-```
-
-### Ranking Formula
-
-```
-Total Score = Relevance (0–50) + Recency (0–30) + Source Bonus (0–20)
-
-Relevance:  +10 per keyword in title, +3 per keyword in abstract
-Recency:    2024+ = 30pts, 2022+ = 24pts, 2020+ = 16pts, 2018+ = 8pts
-Source:     PubMed = 20pts, OpenAlex = 14pts
+        Structured Response
+        (Sections + Sources + Summary)
 ```
 
 ---
 
-## 📡 Data Sources
+## 🛠️ Tech Stack
 
-| Source | Type | Retrieval |
-|--------|------|-----------|
-| **PubMed (NCBI)** | Peer-reviewed publications | esearch → efetch (2-step XML pipeline) |
-| **OpenAlex** | Global research database | Paginated REST API with inverted-index abstract reconstruction |
-| **ClinicalTrials.gov v2** | Clinical studies | Structured condition query with status, phase, location |
+### Frontend
+| Technology | Purpose |
+|---|---|
+| React 18 + Vite | UI framework and build tool |
+| React Router v6 | Client-side routing |
+| Recharts | Interactive charts and data visualization |
+| Axios | HTTP client |
+| ReactMarkdown | Structured response rendering |
 
-All APIs are **free and require no API key**.
+### Backend
+| Technology | Purpose |
+|---|---|
+| Node.js + Express | REST API server |
+| MongoDB + Mongoose | Database and ODM |
+| JSON Web Token | Authentication |
+| Bcryptjs | Password hashing |
+| Axios | External API calls |
+| xml2js | PubMed XML parsing |
+
+### AI / LLM
+| Technology | Purpose |
+|---|---|
+| HuggingFace Inference API | Mistral-7B-Instruct primary LLM |
+| Ollama (optional) | Local LLM fallback |
+| Custom Structured Engine | Always-on research-based fallback |
+
+### Data Sources
+| API | Data |
+|---|---|
+| [PubMed (NCBI E-utilities)](https://www.ncbi.nlm.nih.gov/home/develop/api/) | Peer-reviewed medical publications |
+| [OpenAlex](https://openalex.org/) | 200M+ global research papers |
+| [ClinicalTrials.gov v2](https://clinicaltrials.gov/data-api/api) | Active and completed clinical trials |
 
 ---
 
@@ -204,21 +182,21 @@ All APIs are **free and require no API key**.
 CuraLink/
 ├── curalink-backend/
 │   ├── controllers/
-│   │   ├── authController.js       # Register, login, profile update
+│   │   ├── authController.js       # Register, login, profile
 │   │   ├── chatController.js       # Main AI pipeline orchestrator
-│   │   ├── forumController.js      # Forum CRUD
-│   │   ├── meetingController.js    # Meeting CRUD
+│   │   ├── forumController.js      # Community forum CRUD
+│   │   ├── meetingController.js    # Meeting management
 │   │   ├── networkController.js    # Connection requests + messaging
-│   │   └── userController.js       # Favorites + stats
+│   │   └── userController.js      # Favorites, stats
 │   ├── middleware/
 │   │   └── auth.js                 # JWT protect + role authorize
 │   ├── models/
-│   │   ├── Conversation.js         # Chat session storage
-│   │   ├── DirectMessage.js        # Researcher-to-researcher DMs
-│   │   ├── ForumPost.js            # Community forum posts
-│   │   ├── Meeting.js              # Scheduled meetings
-│   │   ├── NetworkRequest.js       # Connection request tracking
-│   │   └── User.js                 # User profiles (patient + researcher)
+│   │   ├── Conversation.js         # Chat session history
+│   │   ├── DirectMessage.js        # Network direct messages
+│   │   ├── ForumPost.js            # Forum posts
+│   │   ├── Meeting.js              # Researcher meetings
+│   │   ├── NetworkRequest.js       # Connection requests
+│   │   └── User.js                 # User accounts + profiles
 │   ├── routes/
 │   │   ├── auth.js
 │   │   ├── chat.js
@@ -229,265 +207,189 @@ CuraLink/
 │   │   └── user.js
 │   ├── services/
 │   │   ├── clinicalTrialsService.js  # ClinicalTrials.gov API
-│   │   ├── llmService.js             # 3-tier LLM reasoning
-│   │   ├── openAlexService.js        # OpenAlex API + abstract rebuild
-│   │   ├── pubmedService.js          # PubMed 2-step pipeline
-│   │   └── rankingService.js         # Relevance + recency scoring
+│   │   ├── llmService.js             # 3-tier LLM + structured fallback
+│   │   ├── openAlexService.js        # OpenAlex API + pagination
+│   │   ├── pubmedService.js          # PubMed 2-step search + parse
+│   │   └── rankingService.js         # Relevance + recency ranking
 │   ├── utils/
 │   │   └── queryExpander.js          # Query expansion + disease map
-│   ├── .env
-│   ├── package.json
 │   └── server.js
 │
-├── curalink-frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   │   └── Curalink logo.jpg
-│   │   ├── components/
-│   │   │   ├── ChatInterface.jsx         # Core AI chat (embedded + standalone)
-│   │   │   ├── ProfileCompletionGate.jsx # Mandatory profile setup modal
-│   │   │   └── shared/
-│   │   │       ├── LoadingSpinner.jsx
-│   │   │       ├── TagInput.jsx
-│   │   │       └── Toast.jsx
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx           # JWT auth state + localStorage
-│   │   ├── pages/
-│   │   │   ├── LandingPage.jsx
-│   │   │   ├── LoginPage.jsx
-│   │   │   ├── RegisterPage.jsx
-│   │   │   ├── PatientDashboard.jsx      # Full patient experience
-│   │   │   └── ResearcherDashboard.jsx   # Full researcher experience
-│   │   ├── App.css                       # ChatInterface dark theme
-│   │   ├── App.jsx                       # Routes + protected routes
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── .env.local
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-│
-└── README.md
+└── curalink-frontend/
+    ├── src/
+    │   ├── assets/
+    │   │   └── Curalink logo.jpg
+    │   ├── components/
+    │   │   ├── ChatInterface.jsx       # Core AI chat (embedded + standalone)
+    │   │   ├── ProfileCompletionGate.jsx
+    │   │   └── shared/
+    │   ├── context/
+    │   │   └── AuthContext.jsx         # Auth state + JWT management
+    │   ├── pages/
+    │   │   ├── LandingPage.jsx
+    │   │   ├── LoginPage.jsx
+    │   │   ├── RegisterPage.jsx
+    │   │   ├── PatientDashboard.jsx
+    │   │   └── ResearcherDashboard.jsx
+    │   ├── App.jsx
+    │   ├── App.css                     # ChatInterface dark theme only
+    │   └── main.jsx
+    └── vite.config.js
 ```
 
 ---
 
-## 🏁 Getting Started
+## 🔌 API Endpoints
 
-### Prerequisites
+### Authentication
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/auth/register` | Register new user | ❌ |
+| POST | `/api/auth/login` | Login | ❌ |
+| GET | `/api/auth/me` | Get current user | ✅ |
+| PUT | `/api/auth/profile` | Update profile | ✅ |
 
-- Node.js v18 or higher
-- MongoDB (local) or MongoDB Atlas account
-- Git
+### AI Research (Core)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/chat` | Full AI research pipeline | Optional |
+| GET | `/api/chat/history/:sessionId` | Chat history | ❌ |
 
-### 1. Clone the Repository
+### User Data
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/users/favorites` | Get saved items | ✅ |
+| POST | `/api/users/favorites` | Save a publication/trial | ✅ |
+| DELETE | `/api/users/favorites/:encodedUrl` | Remove favorite | ✅ |
+| GET | `/api/users/stats` | Dashboard stats | ✅ |
 
-```bash
-git clone https://github.com/yourusername/curalink.git
-cd curalink
-```
+### Forum
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/forum` | All posts | ❌ |
+| POST | `/api/forum` | Create post | ✅ |
+| DELETE | `/api/forum/:id` | Delete own post | ✅ |
 
-### 2. Backend Setup
+### Meetings (Researcher)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/meetings` | Get my meetings | ✅ |
+| POST | `/api/meetings` | Create meeting | ✅ |
+| PUT | `/api/meetings/:id` | Update / mark complete | ✅ |
+| DELETE | `/api/meetings/:id` | Delete meeting | ✅ |
 
-```bash
-cd curalink-backend
-npm install
-```
-
-Create `.env` file (see [Environment Variables](#-environment-variables)):
-
-```bash
-cp .env.example .env
-# Edit .env with your values
-```
-
-Start the backend:
-
-```bash
-npm run dev
-# Server runs on http://localhost:5000
-```
-
-Verify it's working:
-```bash
-curl http://localhost:5000/api/health
-# Expected: { "status": "ok", "mongo": "connected" }
-```
-
-### 3. Frontend Setup
-
-```bash
-cd ../curalink-frontend
-npm install
-```
-
-Create `.env.local`:
-
-```bash
-echo "VITE_API_URL=" > .env.local
-```
-
-Start the frontend:
-
-```bash
-npm run dev
-# App runs on http://localhost:5173
-```
-
-### 4. Open the App
-
-Navigate to [http://localhost:5173](http://localhost:5173)
-
-1. Click **"I'm a Patient"** or **"I'm a Researcher"** to register
-2. Complete your profile setup
-3. Start using the AI Research Assistant
+### Network (Researcher)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/network/researchers` | Discover researchers | ✅ |
+| GET | `/api/network/connections` | My connections | ✅ |
+| GET | `/api/network/requests` | Incoming requests | ✅ |
+| GET | `/api/network/sent` | Sent requests | ✅ |
+| POST | `/api/network/request` | Send request | ✅ |
+| PUT | `/api/network/request/:id` | Accept / decline | ✅ |
+| DELETE | `/api/network/cancel/:toUserId` | Cancel sent request | ✅ |
+| GET | `/api/network/messages/:userId` | Direct messages | ✅ |
+| POST | `/api/network/messages/:userId` | Send message | ✅ |
 
 ---
 
-## 🔐 Environment Variables
+## 🔑 Environment Variables
 
 ### Backend (`curalink-backend/.env`)
-
 ```env
-# Server
 PORT=5000
-NODE_ENV=development
-
-# Database
 MONGO_URI=mongodb://localhost:27017/curalink
-# For Atlas: mongodb+srv://user:pass@cluster.mongodb.net/curalink
-
-# Authentication
-JWT_SECRET=your_super_secret_jwt_key_here_min_32_chars
-
-# LLM (optional — app works without these via structured fallback)
-HF_API_KEY=hf_your_huggingface_api_key_here
+JWT_SECRET=your_jwt_secret_here
+HF_API_KEY=your_huggingface_api_key_here
 OLLAMA_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.2
 ```
 
 ### Frontend (`curalink-frontend/.env.local`)
-
 ```env
-# Leave empty for local development (uses Vite proxy to port 5000)
 VITE_API_URL=
-
-# For production deployment, set to your backend URL:
-# VITE_API_URL=https://your-backend.onrender.com
 ```
 
-> **Note:** The app functions fully without an LLM API key. The Structured Research Engine fallback always works and returns real data from PubMed, OpenAlex, and ClinicalTrials.gov.
+> **Note:** `VITE_API_URL` is empty for local development (Vite proxy handles it). Set it to your backend URL for production.
 
 ---
 
-## 📡 API Endpoints
+## 🏃 Running Locally
 
-### Authentication
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/auth/register` | Register new user | Public |
-| POST | `/api/auth/login` | Login and get JWT | Public |
-| GET | `/api/auth/me` | Get current user | 🔒 |
-| PUT | `/api/auth/profile` | Update profile | 🔒 |
+### Prerequisites
+- Node.js 18+
+- MongoDB (local or Atlas)
+- npm or yarn
 
-### Core AI Research
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/chat` | Main AI research pipeline | Optional |
-| GET | `/api/chat/history/:sessionId` | Get conversation history | Optional |
-| GET | `/api/health` | Server health check | Public |
+### Backend
+```bash
+cd curalink-backend
+npm install
+npm run dev
+# Runs on http://localhost:5000
+```
 
-### User Data
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/users/favorites` | Get saved items | 🔒 |
-| POST | `/api/users/favorites` | Save publication or trial | 🔒 |
-| DELETE | `/api/users/favorites/:encodedUrl` | Remove favorite | 🔒 |
-| GET | `/api/users/stats` | Get dashboard stats | 🔒 |
+### Frontend
+```bash
+cd curalink-frontend
+npm install
+npm run dev
+# Runs on http://localhost:5173
+```
 
-### Forum
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/forum` | Get all posts | Public |
-| POST | `/api/forum` | Create post | 🔒 |
-| DELETE | `/api/forum/:id` | Delete own post | 🔒 |
-
-### Meetings (Researcher)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/meetings` | Get user's meetings | 🔒 |
-| POST | `/api/meetings` | Schedule meeting | 🔒 |
-| PUT | `/api/meetings/:id` | Update/complete meeting | 🔒 |
-| DELETE | `/api/meetings/:id` | Delete meeting | 🔒 |
-
-### Network (Researcher)
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/network/researchers` | Discover researchers | 🔒 |
-| GET | `/api/network/connections` | Get connections | 🔒 |
-| GET | `/api/network/requests` | Incoming requests | 🔒 |
-| GET | `/api/network/sent` | Sent requests | 🔒 |
-| POST | `/api/network/request` | Send connection request | 🔒 |
-| PUT | `/api/network/request/:id` | Accept/decline request | 🔒 |
-| DELETE | `/api/network/cancel/:toUserId` | Cancel sent request | 🔒 |
-| GET | `/api/network/messages/:userId` | Get DMs | 🔒 |
-| POST | `/api/network/messages/:userId` | Send DM | 🔒 |
+### Verify
+```bash
+curl http://localhost:5000/api/health
+# Expected: { "status": "ok", "services": { "mongodb": "connected", "llm": "structured-fallback-ready" } }
+```
 
 ---
 
-## 🚢 Deployment
+## 🧪 Example Queries
 
-### Backend → Render
+Try these in the AI Research Assistant after setting a condition:
 
-1. Push code to GitHub
-2. Create new **Web Service** on [Render](https://render.com)
-3. Connect your GitHub repo
-4. Set build command: `npm install`
-5. Set start command: `node server.js`
-6. Add environment variables from `.env`
-7. Deploy
-
-### Frontend → Vercel
-
-1. Create new project on [Vercel](https://vercel.com)
-2. Connect your GitHub repo, set root to `curalink-frontend`
-3. Set environment variable: `VITE_API_URL=https://your-render-backend.onrender.com`
-4. Deploy
-
-### MongoDB → Atlas
-
-1. Create free M0 cluster at [MongoDB Atlas](https://mongodb.com/atlas)
-2. Create database user with read/write access
-3. Whitelist IP `0.0.0.0/0`
-4. Copy connection string and set as `MONGO_URI` in Render
+| Condition | Query |
+|---|---|
+| Lung Cancer | "Latest immunotherapy treatments in 2024" |
+| Parkinson's Disease | "What is deep brain stimulation and how effective is it?" |
+| Diabetes | "Clinical trials for type 2 diabetes management" |
+| Alzheimer's | "Early diagnosis methods and biomarkers" |
+| Heart Disease | "Recent studies on cardiovascular prevention" |
 
 ---
 
-## 🧪 Example Queries to Test
+## 📊 Ranking Algorithm
 
-| Query | Disease Context | What it demonstrates |
-|-------|----------------|----------------------|
-| "Latest treatment for lung cancer" | lung cancer | Treatment retrieval + ASCO guidelines |
-| "Clinical trials for Parkinson's disease" | Parkinson's disease | ClinicalTrials.gov integration + recruiting status |
-| "Top researchers in Alzheimer's disease" | Alzheimer's disease | OpenAlex author retrieval |
-| "Recent studies on heart disease" | heart disease | Multi-source publication ranking |
-| "Can I take Vitamin D?" *(follow-up)* | *(previous context)* | Multi-turn conversation memory |
-| "Deep brain stimulation effectiveness" | Parkinson's disease | Query expansion in action |
+The retrieval pipeline fetches a broad candidate pool (160+ results) and ranks using a weighted scoring system:
+
+```
+Total Score = Relevance Score + Recency Score + Source Score + Quality Score
+
+Relevance:  +10 per keyword in title, +3 per keyword in abstract (max 50)
+Recency:    2024+ = 30pts, 2022+ = 24pts, 2020+ = 16pts, 2018+ = 8pts
+Source:     PubMed = 20pts, OpenAlex = 14pts
+Quality:    Has abstract (>80 chars) = +10pts
+
+Clinical Trial Ranking:
+Recruiting = 35pts, Active = 25pts, Completed = 12pts
++ Disease match bonus (12pts/word, max 36)
++ Has contact info = +8pts
++ Has location = +8pts
+```
 
 ---
 
-## 🏆 Evaluation Criteria Coverage
+## 🏆 Hackathon Context
 
-| Criterion | Implementation |
-|-----------|---------------|
-| 🧠 **AI Pipeline Quality** | 3-tier LLM + structured fallback, always-working responses |
-| 🔍 **Retrieval + Ranking Accuracy** | 160+ candidates retrieved, scored by relevance + recency + credibility |
-| ⚙️ **Engineering Depth** | MERN stack, JWT auth, role-based access, MongoDB sessions, parallel API calls |
-| 🎯 **Usability** | Two role dashboards, profile gates, persistent chat, responsive design |
-| 📊 **Data Sources** | PubMed ✅ OpenAlex ✅ ClinicalTrials.gov ✅ |
-| 🔄 **Context Awareness** | Multi-turn sessions stored in MongoDB with conversation history |
-| 📋 **Structured Output** | Condition Overview → Research Insights → Trials → Takeaways → Summary → Sources |
+This project was built for the **Curalink AI Medical Research Assistant Hackathon**.
+
+**Evaluation Criteria Met:**
+- ✅ AI pipeline quality — 3-tier LLM with intelligent fallback
+- ✅ Retrieval + ranking accuracy — 160+ candidates → top 8 with weighted scoring
+- ✅ Engineering depth — full MERN stack, JWT auth, role system, real-time data
+- ✅ Usability — dual role dashboards, profile completion, responsive design
+- ✅ Data sources — PubMed + OpenAlex + ClinicalTrials.gov all integrated
 
 ---
 
@@ -495,20 +397,19 @@ VITE_API_URL=
 
 **Atif Ansari**
 
-Built with dedication for the Curalink AI Medical Research Assistant Hackathon.
+> Built with dedication for the Curalink Hackathon. This project demonstrates how AI can democratize access to medical research for both patients and researchers.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is built for hackathon purposes. All medical data is sourced from publicly available APIs (PubMed, OpenAlex, ClinicalTrials.gov).
+
+> ⚕️ **Medical Disclaimer:** Curalink is a research tool only. All information provided is for educational purposes. Always consult a qualified medical professional before making any health decisions.
 
 ---
 
 <div align="center">
-
-**🧬 Curalink — Connecting Research to Reality**
-
-*Sources: PubMed • OpenAlex • ClinicalTrials.gov*
-
+  <strong>🧬 Curalink — Connect. Discover. Advance.</strong><br/>
+  <em>Sources: PubMed • OpenAlex • ClinicalTrials.gov</em>
 </div>

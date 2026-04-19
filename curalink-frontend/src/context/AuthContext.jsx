@@ -5,7 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import axios from 'axios';
 
 const AuthContext = createContext();
-const BASE_URL = import.meta.env.VITE_API_URL || '';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://curalink-9la1.onrender.com';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);

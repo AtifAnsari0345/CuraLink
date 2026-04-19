@@ -78,7 +78,7 @@ const ResearcherDashboard = () => {
   const [chatStats, setChatStats] = useState(null)
 
   const api = useMemo(() => axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL || ''}/api`,
+    baseURL: `${import.meta.env.VITE_API_URL || 'https://curalink-9la1.onrender.com'}/api`,
     headers: { Authorization: `Bearer ${token}` }
   }), [token])
 

@@ -121,7 +121,7 @@ export default function ChatInterface({
   const [savedItems, setSavedItems] = useState(new Set())
   const [isTopPanelCollapsed, setIsTopPanelCollapsed] = useState(false)
 
-  const API_BASE = import.meta.env.VITE_API_URL || ''
+  const API_BASE = import.meta.env.VITE_API_URL || 'https://curalink-9la1.onrender.com'
 
   useEffect(() => {
     if (onMessagesChange) {

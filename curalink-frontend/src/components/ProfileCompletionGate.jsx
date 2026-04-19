@@ -26,7 +26,7 @@ export default function ProfileCompletionGate({ children }) {
     return () => window.removeEventListener('resize', handleResize)
   }, []);
 
-  const BASE_URL = import.meta.env.VITE_API_URL || '';
+  const BASE_URL = import.meta.env.VITE_API_URL || 'https://curalink-9la1.onrender.com';
 
   const conditionOptions = [
     'Diabetes', 'Cancer', 'Heart Disease', "Parkinson's Disease", "Alzheimer's Disease",

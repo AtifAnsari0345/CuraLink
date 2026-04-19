@@ -108,7 +108,7 @@ const PatientDashboard = () => {
   const [medicationInput, setMedicationInput] = useState('')
 
   const api = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL || ''}/api`,
+    baseURL: `${import.meta.env.VITE_API_URL || 'https://curalink-9la1.onrender.com'}/api`,
     headers: {
       Authorization: `Bearer ${token}`
     }
