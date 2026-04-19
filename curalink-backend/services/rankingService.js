@@ -67,7 +67,10 @@ function isTreatmentIntent(query) {
   return false;
 }
 
-function strictPublicationFilter(article, diseaseInfo, isTreatmentMode) {
+function strictPublicationFilter(article, diseaseInfo, isTreatmentMode, intents, entity) {
+  const isAdviceQuery = intents && intents.includes('advice_query');
+  const entityLower = String(entity || '').toLowerCase();
+  
   if (!diseaseInfo.detected) {
     return { keep: true, reason: 'no disease detected' };
   }
@@ -77,23 +80,56 @@ function strictPublicationFilter(article, diseaseInfo, isTreatmentMode) {
   const fullTextLower = titleLower + ' ' + abstractLower;
   const components = extractDiseaseComponents(diseaseInfo.disease);
 
-  let hasDiseaseInTitle = false;
-  for (const kw of components.keywords) {
-    if (titleLower.includes(kw)) {
-      hasDiseaseInTitle = true;
-      break;
+  // Relax filter for advice queries
+  if (isAdviceQuery) {
+    let hasDiseaseOrEntity = false;
+    
+    // Check disease in title or abstract
+    for (const kw of components.keywords) {
+      if (titleLower.includes(kw) || abstractLower.includes(kw)) {
+        hasDiseaseOrEntity = true;
+        break;
+      }
     }
-  }
-  if (!hasDiseaseInTitle) {
-    for (const syn of components.synonyms) {
-      if (titleLower.includes(syn.toLowerCase())) {
+    if (!hasDiseaseOrEntity) {
+      for (const syn of components.synonyms) {
+        if (titleLower.includes(syn.toLowerCase()) || abstractLower.includes(syn.toLowerCase())) {
+          hasDiseaseOrEntity = true;
+          break;
+        }
+      }
+    }
+    
+    // Check entity in title or abstract
+    if (!hasDiseaseOrEntity && entityLower) {
+      if (titleLower.includes(entityLower) || abstractLower.includes(entityLower)) {
+        hasDiseaseOrEntity = true;
+      }
+    }
+    
+    if (!hasDiseaseOrEntity) {
+      return { keep: false, reason: 'advice query: no disease or entity in title/abstract' };
+    }
+  } else {
+    // Original strict filter: require disease in title
+    let hasDiseaseInTitle = false;
+    for (const kw of components.keywords) {
+      if (titleLower.includes(kw)) {
         hasDiseaseInTitle = true;
         break;
       }
     }
-  }
-  if (!hasDiseaseInTitle) {
-    return { keep: false, reason: 'disease not in title' };
+    if (!hasDiseaseInTitle) {
+      for (const syn of components.synonyms) {
+        if (titleLower.includes(syn.toLowerCase())) {
+          hasDiseaseInTitle = true;
+          break;
+        }
+      }
+    }
+    if (!hasDiseaseInTitle) {
+      return { keep: false, reason: 'disease not in title' };
+    }
   }
 
   if (isTreatmentMode) {
@@ -327,7 +363,7 @@ function calculateTrialScore(trial, diseaseInfo) {
   return score;
 }
 
-function rankPublications(pubmedArticles, openAlexArticles, query, diseaseInfo, intents, isTreatmentIntentFlag, topN = 6) {
+function rankPublications(pubmedArticles, openAlexArticles, query, diseaseInfo, intents, isTreatmentIntentFlag, entity, topN = 6) {
   const combined = [...pubmedArticles, ...openAlexArticles];
   const queryLower = String(query || '').toLowerCase();
   const isTrialsIntent = intents.includes('trials') || queryLower.includes('clinical trial');
@@ -335,6 +371,8 @@ function rankPublications(pubmedArticles, openAlexArticles, query, diseaseInfo, 
 
   console.log('[Ranking] Total retrieved:', combined.length);
   console.log('[Ranking] Treatment mode:', isTreatmentMode);
+  console.log('[Ranking] Advice query:', intents && intents.includes('advice_query'));
+  console.log('[Ranking] Entity:', entity);
 
   const seen = new Map();
   const deduped = [];
@@ -350,7 +388,7 @@ function rankPublications(pubmedArticles, openAlexArticles, query, diseaseInfo, 
 
   let filtered = [];
   for (const article of deduped) {
-    const filterResult = strictPublicationFilter(article, diseaseInfo, isTreatmentMode);
+    const filterResult = strictPublicationFilter(article, diseaseInfo, isTreatmentMode, intents, entity);
     if (filterResult.keep) {
       filtered.push(article);
     } else {

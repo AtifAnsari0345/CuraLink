@@ -293,23 +293,25 @@ async function tryHuggingFace(prompt, userQuery, disease, publications, clinical
   }
 }
 
-async function generateMedicalResponse(userQuery, disease, publications, clinicalTrials, conversationHistory = []) {
+async function generateMedicalResponse(userQuery, disease, publications, clinicalTrials, conversationHistory = [], intents, isAdviceQuery, entity) {
   const prompt = buildPrompt(userQuery, disease, publications, clinicalTrials, conversationHistory);
 
+  let llmResult;
+
   try {
-    return await tryOllama(prompt, userQuery, disease, publications, clinicalTrials, conversationHistory);
+    llmResult = await tryOllama(prompt, userQuery, disease, publications, clinicalTrials, conversationHistory);
   } catch (ollamaErr) {
     console.log('Falling back to OpenAI...');
     try {
-      return await tryOpenAI(prompt, userQuery, disease, publications, clinicalTrials, conversationHistory);
+      llmResult = await tryOpenAI(prompt, userQuery, disease, publications, clinicalTrials, conversationHistory);
     } catch (openaiErr) {
       console.log('Falling back to HuggingFace...');
       try {
-        return await tryHuggingFace(prompt, userQuery, disease, publications, clinicalTrials, conversationHistory);
+        llmResult = await tryHuggingFace(prompt, userQuery, disease, publications, clinicalTrials, conversationHistory);
       } catch (hfErr) {
         console.log('Falling back to structured fallback...');
         const fallbackResponse = generateStructuredFallback(userQuery, disease, publications, clinicalTrials, conversationHistory);
-        return {
+        llmResult = {
           response: fallbackResponse,
           model: 'Curalink Structured Engine (Research-Based)',
           sourcesUsed: publications.slice(0, 6).map(p => ({ title: p.title, url: p.url, source: p.source }))
@@ -317,6 +319,51 @@ async function generateMedicalResponse(userQuery, disease, publications, clinica
       }
     }
   }
+
+  // Append safe guidance section if it's an advice query
+  if (isAdviceQuery && entity) {
+    const safeGuidance = `
+
+---
+
+## 💡 Guidance
+
+- Research on **${entity}** in the context of **${disease || 'this condition'}** is still evolving and may be limited.
+- It should not replace standard medical treatments.
+- Effects can vary depending on individual conditions and medications.
+- **Please consult a qualified healthcare professional before using ${entity}.**
+`;
+    llmResult.response = llmResult.response + safeGuidance;
+  }
+
+  return llmResult;
 }
 
-module.exports = { generateMedicalResponse };
+function generateGeneralHealthResponse(query) {
+  const safeGuidance = `## 💡 General Health Guidance
+
+This question is general health-related and not tied to a specific disease.
+
+Here are general, evidence-based points to consider:
+
+1. **Vitamin and Supplement Use**:
+   - Supplements like Vitamin D can be beneficial in cases of confirmed deficiency
+   - Excess intake of fat-soluble vitamins (A, D, E, K) can cause side effects
+   - Always check with a healthcare provider before starting any new supplement
+
+2. **Diet and Lifestyle**:
+   - A balanced, varied diet is generally recommended for most people
+   - Specific diets should be discussed with a healthcare provider or registered dietitian
+   - Regular physical activity has numerous health benefits
+
+3. **Important Reminder**:
+   - Avoid self-diagnosis and self-medication
+   - If you have specific concerns about a condition, consult a qualified healthcare professional
+   - Individual health needs vary, so personalized advice is key
+
+Always consult a qualified healthcare professional before making any changes to your health routine.`;
+
+  return safeGuidance;
+}
+
+module.exports = { generateMedicalResponse, generateGeneralHealthResponse };

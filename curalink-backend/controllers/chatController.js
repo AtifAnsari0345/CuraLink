@@ -1,10 +1,10 @@
 const crypto = require('crypto');
-const { expandQuery, buildPubMedSearchTerm, buildOpenAlexSearchTerm } = require('../utils/queryExpander');
+const { expandQuery, buildPubMedSearchTerm, buildOpenAlexSearchTerm, resolveDiseaseContext } = require('../utils/queryExpander');
 const { fetchPubMedArticles } = require('../services/pubmedService');
 const { fetchOpenAlexArticles } = require('../services/openAlexService');
 const { fetchClinicalTrials } = require('../services/clinicalTrialsService');
 const { rankPublications, rankClinicalTrials } = require('../services/rankingService');
-const { generateMedicalResponse } = require('../services/llmService');
+const { generateMedicalResponse, generateGeneralHealthResponse } = require('../services/llmService');
 
 let Conversation;
 try {
@@ -45,6 +45,51 @@ async function handleChat(req, res) {
       return res.status(400).json({ error: 'userMessage is required' });
     }
 
+    // ==============================================
+    // HARD GATE: Only retrieve if query EXPLICITLY contains disease keywords
+    // ==============================================
+    function shouldDoRetrieval(query) {
+      const diseaseKeywords = [
+        "cancer", "diabetes", "alzheimer", "parkinson",
+        "tumor", "disease", "syndrome", "infection"
+      ];
+      const lower = query.toLowerCase();
+      return diseaseKeywords.some(d => lower.includes(d));
+    }
+
+    // STRICT GATE: If query doesn't mention disease explicitly, bypass retrieval
+    if (!shouldDoRetrieval(userMessage)) {
+      console.log('[HARD GATE] Query has no explicit disease keyword - returning general guidance');
+      const generalResponse = `## 💡 General Health Guidance
+
+This question is general health-related and does not require medical research retrieval.
+
+Here are general, evidence-based points:
+
+1. **Vitamin and Supplement Use**:
+   - Vitamin D can be helpful if you have a confirmed deficiency
+   - Excess intake of fat-soluble vitamins (A, D, E, K) can lead to toxicity
+   - Dosage should always be guided by a qualified healthcare professional
+
+2. **Important Reminders**:
+   - Do not self-medicate
+   - Consider a blood test to check Vitamin D levels if you have concerns
+   - Always consult a healthcare professional before starting any new supplement
+   - Individual health needs vary, so personalized advice is key
+
+Always consult a qualified healthcare professional before making any changes to your health routine.`;
+
+      return res.json({
+        success: true,
+        response: generalResponse,
+        model: 'Curalink General Health Guidance',
+        publications: [],
+        clinicalTrials: [],
+        sourcesUsed: [],
+        sessionId
+      });
+    }
+
     if (!sessionId) {
       sessionId = crypto.randomUUID();
     }
@@ -75,34 +120,39 @@ async function handleChat(req, res) {
     if (patientName) conversation.userContext.patientName = patientName;
     if (location) conversation.userContext.location = location;
 
-    const effectiveDisease = disease || conversation.userContext.disease || '';
+    const previousDisease = conversation.userContext.disease || '';
+    const effectiveDisease = resolveDiseaseContext(userMessage, previousDisease) || '';
+    
+    // Update user context only if we found a new disease
+    if (effectiveDisease && effectiveDisease !== previousDisease) {
+      conversation.userContext.disease = effectiveDisease;
+    }
 
     console.log(`[Chat] session=${sessionId.substring(0, 8)}... disease="${effectiveDisease}" query="${userMessage.substring(0, 60)}"`);
 
     // Add user message
     conversation.messages.push({ role: 'user', content: userMessage, timestamp: new Date() });
 
-    // Smart retrieval decision
+    // Retrieval decision - at this point we know query has explicit disease keyword
     const messageLength = userMessage.trim().length;
     const hasDisease = effectiveDisease.length > 0;
     const isShortAck = messageLength < 8 && !userMessage.match(/treat|trial|research|study|drug|cancer|disease|symptom|diagnos/i);
     const hasResearchIntent = userMessage.match(/treat|therap|trial|research|study|drug|latest|recent|clinical|symptom|diagnos|cure|manag|prevent|cause|risk|progress|outcome|survival/i);
     
-    // Always retrieve if disease is set or query has research intent
-    // Also retrieve for follow-up questions that reference previous context
     const isFollowUp = conversation.messages.length > 2;
     const needsRetrieval = !isShortAck && (hasResearchIntent || isFollowUp || hasDisease || messageLength > 15);
     
-    console.log(`[Decision] needsRetrieval=${needsRetrieval} hasDisease=${hasDisease} isFollowUp=${isFollowUp} hasIntent=${!!hasResearchIntent}`);
+    console.log(`[Decision] needsRetrieval=${needsRetrieval} hasDisease=${hasDisease} isFollowUp=${isFollowUp}`);
 
     let rankedPublications = [];
     let rankedTrials = [];
+    let expanded = null;
 
     if (needsRetrieval) {
-      console.log(`[Research] Starting retrieval for: effectiveDisease="${effectiveDisease}", userMessage="${userMessage}"`);
+      console.log(`[Research] Starting retrieval for: disease="${effectiveDisease}", query="${userMessage}"`);
 
       try {
-        const expanded = expandQuery({
+        expanded = expandQuery({
           disease: effectiveDisease,
           query: userMessage,
           location: conversation.userContext.location || ''
@@ -133,8 +183,9 @@ async function handleChat(req, res) {
           expanded.diseaseInfo, 
           expanded.intents, 
           expanded.isTreatmentIntent, 
+          expanded.entity,
           6
-        );
+          );
         rankedTrials = rankClinicalTrials(
           trialsResults, 
           expanded.diseaseInfo, 
@@ -143,8 +194,7 @@ async function handleChat(req, res) {
 
         console.log('[Research] Final ranked counts:', {pubs: rankedPublications.length, trials: rankedTrials.length});
       } catch (retrievalError) {
-        console.error('[Research] Retrieval pipeline error:', retrievalError.message);
-        console.error('[Research] Full error:', retrievalError);
+        console.error('[Research] Retrieval error:', retrievalError.message);
       }
     }
 
@@ -153,12 +203,17 @@ async function handleChat(req, res) {
 
     // Generate LLM response
     console.log('[LLM] Generating response...');
-    const llmResult = await generateMedicalResponse(
+    let llmResult;
+
+    llmResult = await generateMedicalResponse(
       userMessage,
       effectiveDisease,
       rankedPublications,
       rankedTrials,
-      recentHistory
+      recentHistory,
+      expanded ? expanded.intents : [],
+      expanded ? expanded.isAdviceQuery : false,
+      expanded ? expanded.entity : null
     );
     console.log(`[LLM] Model used: ${llmResult.model}`);
 

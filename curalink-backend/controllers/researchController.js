@@ -31,6 +31,7 @@ async function handleResearch(req, res) {
       expandedResult.diseaseInfo, 
       expandedResult.intents, 
       expandedResult.isTreatmentIntent, 
+      expandedResult.entity,
       6
     );
 
@@ -44,7 +45,11 @@ async function handleResearch(req, res) {
       success: true,
       query: {
         original: { disease, query, location },
-        expanded: expandedResult.expandedTerms
+        expanded: {
+          primaryQuery: expandedResult.primaryQuery,
+          openAlexQuery: expandedResult.openAlexQuery,
+          clinicalTrialsQuery: expandedResult.clinicalTrialsQuery
+        }
       },
       results: {
         publications: rankedPublications,
