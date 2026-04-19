@@ -12,7 +12,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
-        value: curalink_jwt_secret_change_this_in_production_for_real
+        value: curalink_super_secret_jwt_key_2024
       - key: OPENAI_API_KEY
         value: sk-proj-6rY-zX_aSSZ12oYSu_eNvdykGti3P1-iZVd7q0uyCHVeL-6-bv5oAI_zPaYub04OFDC_ImuX61WDT3R1bkF_l20wYXtoizDGSCEEDP_EKoa/SNhP2Rfi_Awvfbo
       - key: OPENAI_MODEL
